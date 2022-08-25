@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.noble.noble.mapper.LogMapper">
+    <insert id="insertLog" parameterType="Log">
+        INSERT INTO log (nickname, what, reason, who)
+        VALUES (#{nickname}, #{what}, #{reason}, #{who})
+    </insert>
+
+    <select id="getLogList" parameterType="map" resultType="Log">
+        SELECT * FROM log
+            <if test="type == 1 and searchStr != ''"> WHERE nickname LIKE '%${searchStr}%'</if>
+            <if test="type == 2 and searchStr != ''"> WHERE what LIKE '%${searchStr}%'</if>
+        ORDER BY ${order}
+    </select>
+</mapper>

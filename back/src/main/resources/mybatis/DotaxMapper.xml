@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.noble.noble.mapper.DotaxMapper">
+    <insert id="insertDotax" parameterType="Dotax">
+        INSERT INTO dotax (nickname, main_char, level, job, upper_noble, grantor)
+        VALUES (#{nickname}, #{mainChar}, #{level}, #{job}, #{upperNoble}, #{grantor})
+    </insert>
+
+    <select id="getDotaxListFromMain" parameterType="String" resultType="String">
+        SELECT nickname FROM dotax WHERE main_char = #{mainChar} AND upper_noble = 0 AND dotaxer = 0;
+    </select>
+    
+    <select id="getDotaxUpperListFromMain" parameterType="String" resultType="String">
+        SELECT nickname FROM dotax WHERE main_char = #{mainChar} AND upper_noble = 1 AND dotaxer = 0;
+    </select>
+
+    <select id="getDotaxList" parameterType="map" resultType="String">
+        SELECT * FROM dotax
+            <if test="type == 1 and searchStr != ''"> WHERE nickname LIKE '%${searchStr}%'</if>
+            <if test="type == 2 and searchStr != ''"> WHERE job LIKE '%${searchStr}%'</if>
+        ORDER BY ${order}
+    </select>
+
+    <select id="getMainCharFromDotax" parameterType="String" resultType="String">
+        SELECT main_char FROM dotax WHERE nickname LIKE '%${searchStr}%' AND main_char is not null AND dotaxer = 0
+    </select>
+
+    <select id="getDotax" parameterType="int" resultType="Dotax">
+        SELECT * FROM dotax WHERE idx = #{idx};
+    </select>
+
+    <update id="updateDotax" parameterType="Dotax">
+        UPDATE dotax
+            <set>
+                <if test="nickname != null or nickname != ''">nickname = #{nickname}</if>
+                <if test="mainChar != null or mainChar != ''">main_char = #{mainChar}</if>
+                <if test="level != null or level != ''">level = #{level}</if>
+                <if test="job != null or job != ''">job = #{job}</if>
+                <if test="upperNoble != null or upperNoble != ''">upper_noble = #{upperNoble}</if>
+                <if test="grantor != null or grantor != ''">grantor = #{grantor}</if>
+            </set>
+        WHERE idx = #{idx}
+    </update>
+
+    <delete id="deleteDotax" parameterType="int">
+        DELETE FROM dotax WHERE idx = #{idx}
+    </delete>
+
+    <delete id="deleteDotaxFromMain" parameterType="String">
+        DELETE FROM dotax WHERE main_char = #{mainChar}
+    </delete>
+
+    <select id="getDotaxNickname" resultType="String">
+        SELECT nickname FROM dotax
+    </select>
+</mapper>
