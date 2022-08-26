@@ -54,4 +54,8 @@ public class CenturyService {
     public List<String> getCenturyNickname() {
         return centuryMapper.getCenturyNickname();
     }
+
+    public int getCenturyCount() {
+        return centuryMapper.getCenturyCount();
+    }
 }

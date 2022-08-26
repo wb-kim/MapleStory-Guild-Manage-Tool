@@ -53,4 +53,8 @@
     <select id="getDotaxNickname" resultType="String">
         SELECT nickname FROM dotax
     </select>
+
+    <select id="getDotaxCount" resultType="int">
+        SELECT COUNT(*) FROM dotax
+    </select>
 </mapper>

@@ -53,4 +53,8 @@
     <select id="getCenturyNickname" resultType="String">
         SELECT nickname FROM century
     </select>
+
+    <select id="getCenturyCount" resultType="int">
+        SELECT COUNT(*) FROM century
+    </select>
 </mapper>

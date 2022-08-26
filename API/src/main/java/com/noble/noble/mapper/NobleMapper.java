@@ -21,4 +21,5 @@ public interface NobleMapper {
     public List<Noble> getNobleForDojang();
     public List<String> getNobleNickname();
     public List<String> getAdmin();
+    public int getNobleCount();
 }

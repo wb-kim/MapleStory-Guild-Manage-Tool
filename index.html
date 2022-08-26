@@ -1,370 +1,145 @@
-    <div id="header"></div>
-        <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-5 align-self-center">
-                        <h4 class="page-title">Dashboard</h4>
-                    </div>
-                    <div class="col-7 align-self-center">
-                        <div class="d-flex align-items-center justify-content-end">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item">
-                                        <a href="#">Home</a>
-                                    </li>
-                                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Email campaign chart -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Sales Ratio</h4>
-                                <div class="sales ct-charts mt-3"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-1">Referral Earnings</h5>
-                                <h3 class="font-light">$769.08</h3>
-                                <div class="mt-3 text-center">
-                                    <div id="earnings"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-0">Users</h4>
-                                <h2 class="font-light">35,658 <span class="font-16 text-success font-medium">+23%</span>
-                                </h2>
-                                <div class="mt-4">
-                                    <div class="row text-center">
-                                        <div class="col-6 border-right">
-                                            <h4 class="mb-0">58%</h4>
-                                            <span class="font-14 text-muted">New Users</span>
-                                        </div>
-                                        <div class="col-6">
-                                            <h4 class="mb-0">42%</h4>
-                                            <span class="font-14 text-muted">Repeat Users</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- Email campaign chart -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Ravenue - page-view-bounce rate -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <!-- column -->
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Latest Sales</h4>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-top-0">NAME</th>
-                                            <th class="border-top-0">STATUS</th>
-                                            <th class="border-top-0">DATE</th>
-                                            <th class="border-top-0">PRICE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
+<!DOCTYPE html>
+<html lang="en">
 
-                                            <td class="txt-oflo">Elite admin</td>
-                                            <td><span class="label label-success label-rounded">SALE</span> </td>
-                                            <td class="txt-oflo">April 18, 2021</td>
-                                            <td><span class="font-medium">$24</span></td>
-                                        </tr>
-                                        <tr>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>리부트2 노블 길드 사이트</title>
+    <link href="dist/css/style.min.css" rel="stylesheet">
+</head>
 
-                                            <td class="txt-oflo">Real Homes WP Theme</td>
-                                            <td><span class="label label-info label-rounded">EXTENDED</span></td>
-                                            <td class="txt-oflo">April 19, 2021</td>
-                                            <td><span class="font-medium">$1250</span></td>
-                                        </tr>
-                                        <tr>
+<style>
+    body {
+        font-family: '나눔 고딕';
+    }
+    .off-screen {
+	    display: none;
+    }
+    #nav {
+        width: 100%;
+        text-align: center;
+    }
+    #nav a {
+        display: inline-block;
+        padding: 3px 5px;
+        margin-right: 10px;
+        background: #ccc;
+        color: #000;
+        text-decoration: none;
+    }
+    #nav a.active {
+        background: #333;
+        color: #fff;
+    }
+</style>
 
-                                            <td class="txt-oflo">Ample Admin</td>
-                                            <td><span class="label label-purple label-rounded">Tax</span></td>
-                                            <td class="txt-oflo">April 19, 2021</td>
-                                            <td><span class="font-medium">$1250</span></td>
-                                        </tr>
-                                        <tr>
-
-                                            <td class="txt-oflo">Medical Pro WP Theme</td>
-                                            <td><span class="label label-success label-rounded">Sale</span></td>
-                                            <td class="txt-oflo">April 20, 2021</td>
-                                            <td><span class="font-medium">-$24</span></td>
-                                        </tr>
-                                        <tr>
-
-                                            <td class="txt-oflo">Hosting press html</td>
-                                            <td><span class="label label-success label-rounded">SALE</span></td>
-                                            <td class="txt-oflo">April 21, 2021</td>
-                                            <td><span class="font-medium">$24</span></td>
-                                        </tr>
-                                        <tr>
-
-                                            <td class="txt-oflo">Digital Agency PSD</td>
-                                            <td><span class="label label-danger label-rounded">Tax</span> </td>
-                                            <td class="txt-oflo">April 23, 2021</td>
-                                            <td><span class="font-medium">-$14</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- Ravenue - page-view-bounce rate -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Recent comment and chats -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <!-- column -->
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Recent Comments</h4>
-                            </div>
-                            <div class="comment-widgets" style="height:430px;">
-                                <!-- Comment Row -->
-                                <div class="d-flex flex-row comment-row mt-0">
-                                    <div class="p-2">
-                                        <img src="assets/images/users/1.jpg" alt="user" width="50"
-                                            class="rounded-circle">
-                                    </div>
-                                    <div class="comment-text w-100">
-                                        <h6 class="font-medium">James Anderson</h6>
-                                        <span class="mb-3 d-block">Lorem Ipsum is simply dummy text of the printing
-                                            and type setting industry. </span>
-                                        <div class="comment-footer">
-                                            <span class="text-muted float-end">April 14, 2021</span>
-                                            <span class="label label-rounded label-primary">Pending</span>
-                                            <span class="action-icons">
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-pencil-alt"></i>
-                                                </a>
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-check"></i>
-                                                </a>
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-heart"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Comment Row -->
-                                <div class="d-flex flex-row comment-row">
-                                    <div class="p-2">
-                                        <img src="assets/images/users/4.jpg" alt="user" width="50"
-                                            class="rounded-circle">
-                                    </div>
-                                    <div class="comment-text active w-100">
-                                        <h6 class="font-medium">Michael Jorden</h6>
-                                        <span class="mb-3 d-block">Lorem Ipsum is simply dummy text of the printing
-                                            and type setting industry. </span>
-                                        <div class="comment-footer ">
-                                            <span class="text-muted float-end">April 14, 2021</span>
-                                            <span class="label label-success label-rounded">Approved</span>
-                                            <span class="action-icons active">
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-pencil-alt"></i>
-                                                </a>
-                                                <a href="javascript:void(0)">
-                                                    <i class="icon-close"></i>
-                                                </a>
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-heart text-danger"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Comment Row -->
-                                <div class="d-flex flex-row comment-row">
-                                    <div class="p-2">
-                                        <img src="assets/images/users/5.jpg" alt="user" width="50"
-                                            class="rounded-circle">
-                                    </div>
-                                    <div class="comment-text w-100">
-                                        <h6 class="font-medium">Johnathan Doeting</h6>
-                                        <span class="mb-3 d-block">Lorem Ipsum is simply dummy text of the printing
-                                            and type setting industry. </span>
-                                        <div class="comment-footer">
-                                            <span class="text-muted float-end">April 14, 2021</span>
-                                            <span class="label label-rounded label-danger">Rejected</span>
-                                            <span class="action-icons">
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-pencil-alt"></i>
-                                                </a>
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-check"></i>
-                                                </a>
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-heart"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Comment Row -->
-                                <div class="d-flex flex-row comment-row mt-0">
-                                    <div class="p-2">
-                                        <img src="assets/images/users/2.jpg" alt="user" width="50"
-                                            class="rounded-circle">
-                                    </div>
-                                    <div class="comment-text w-100">
-                                        <h6 class="font-medium">Steve Jobs</h6>
-                                        <span class="mb-3 d-block">Lorem Ipsum is simply dummy text of the printing
-                                            and type setting industry. </span>
-                                        <div class="comment-footer">
-                                            <span class="text-muted float-end">April 14, 2021</span>
-                                            <span class="label label-rounded label-primary">Pending</span>
-                                            <span class="action-icons">
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-pencil-alt"></i>
-                                                </a>
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-check"></i>
-                                                </a>
-                                                <a href="javascript:void(0)">
-                                                    <i class="ti-heart"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- column -->
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Temp Guide</h4>
-                                <div class="d-flex align-items-center flex-row mt-4">
-                                    <div class="display-5 text-info"><i class="wi wi-day-showers"></i>
-                                        <span>73<sup>°</sup></span></div>
-                                    <div class="ms-2">
-                                        <h3 class="mb-0">Saturday</h3><small>Ahmedabad, India</small>
-                                    </div>
-                                </div>
-                                <table class="table no-border mini-table mt-3">
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-muted">Wind</td>
-                                            <td class="font-medium">ESE 17 mph</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Humidity</td>
-                                            <td class="font-medium">83%</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Pressure</td>
-                                            <td class="font-medium">28.56 in</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-muted">Cloud Cover</td>
-                                            <td class="font-medium">78%</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <ul class="row list-style-none text-center mt-4">
-                                    <li class="col-3">
-                                        <h4 class="text-info"><i class="wi wi-day-sunny"></i></h4>
-                                        <span class="d-block text-muted">09:30</span>
-                                        <h3 class="mt-1">70<sup>°</sup></h3>
-                                    </li>
-                                    <li class="col-3">
-                                        <h4 class="text-info"><i class="wi wi-day-cloudy"></i></h4>
-                                        <span class="d-block text-muted">11:30</span>
-                                        <h3 class="mt-1">72<sup>°</sup></h3>
-                                    </li>
-                                    <li class="col-3">
-                                        <h4 class="text-info"><i class="wi wi-day-hail"></i></h4>
-                                        <span class="d-block text-muted">13:30</span>
-                                        <h3 class="mt-1">75<sup>°</sup></h3>
-                                    </li>
-                                    <li class="col-3">
-                                        <h4 class="text-info"><i class="wi wi-day-sprinkle"></i></h4>
-                                        <span class="d-block text-muted">15:30</span>
-                                        <h3 class="mt-1">76<sup>°</sup></h3>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- Recent comment and chats -->
-                <!-- ============================================================== -->
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer text-center">
-                All Rights Reserved by Nice admin. Designed and Developed by
-                <a href="https://www.wrappixel.com">WrapPixel</a>.
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
+<body>
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
-        <!-- ============================================================== -->
-    <div id="footer"></div>
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $("#header").load("header.html");
-        $("#aside").load("aside.html");
-        $("#footer").load("footer.html");
-    });
-    function movePage(navigator) {
-        var pageUrl = $(navigator).attr("url");
+    </div>
+    <div id="main-wrapper" data-navbarbg="skin6" data-theme="light" data-layout="vertical" data-sidebartype="full"
+        data-boxed-layout="full">
+        <div id="header"></div>
+        <div id="aside"></div>
+        <div class="page-wrapper">
+            <div class="page-breadcrumb">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">가입 조건 및 규칙</h4>
+                            <table class="table table-bordered" style="table-layout: fixed;">
+                                <thead class="table-light">
+                                    <tr style="text-align: center; font-size: medium;">
+                                        <th scope="col" style="font-weight: bold;">길드 가입 및 캐릭터 규칙</th>
+                                        <th scope="col" style="font-weight: bold;">노블 길드 규칙</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="font-size: small;">
+                                        <td>
+                                            1. "노블" - 본캐 길드
+                                            <br>- 레벨 235 이상, 나이 20세 이상
+                                            <br>- 노블(본캐), 부캐
+                                            <br>- 노블 : 플래그, 수로 필수, 최대 1캐릭
+                                            <br>- 부캐 : 레벨 220 이상, 수로 필수, 최대 1캐릭
+                                            <br>- 미접자 관리
+                                            <br>- 장기휴메 : 간부에게 사유를 말하고 휴메, 30일 미접시 쪽지를 통해 안내 후 추방
+                                            <br>- 노블압수 : 14일 미접시 추방
+                                            <br><br>2. 주보캐 길드 규정
+                                            <br>2-1. "20세기사람들" - 주보캐 길드
+                                            <br>- 가입조건 : 노블에 본캐가 있을 것, 레벨 210 이상
+                                            <br>- 3캐릭(노블/노블압수)+2캐릭(우수노블), 3캐릭(노블/노블압수) 플래그 또는 수로 택1 참여시, 길드컨텐츠 참여 캐릭(노블/노블압수) 및, 2캐릭(우수노블) 길드스킬 사용 가능
+                                            <br>- 미접자 관리 : 14일 미접시 추방
+                                            <br><br>2-2. "도탁스" - 주보캐 길드
+                                            <br>- 가입조건 : 노블에 본캐가 있을 것, 레벨 200 이상
+                                            <br>- 1캐릭(노블/노블압수)+4캐릭(우수노블), 1캐릭(노블/노블압수) 플래그와 수로 '모두'참여시, 길드컨텐츠 참여 캐릭(노블/노블압수) 및, 4캐릭(우수노블) 길드스킬 사용 가능
+                                            <br>- 미접자 관리 : 14일 미접시 추방
+                                            <br><br>* 직위명 : 우수노블
+                                            <br>- 신설동기 : 주보캐릭을 다수 보유한 길드원의 편의성 확대 및, '20세기사람들', '도탁스'의 길드 컨텐츠 활성화에 기여하기 위함
+                                            <br>- 직위혜택 : '20세기사람들' 또는, '도탁스' 가입 캐릭터 수로, 플래그 참여시 '우수노블'캐릭터는 길드스킬 사용 가능
+                                            <br>- 직위조건 : '20세기사람들'에 3개 캐릭터 보유 또는 '도탁스'에 1개 캐릭터 보유
+                                            <br><br>*단, 미접속인원 정리후 길드인원 초과시 우수노블 직위 캐릭터 "우선적으로 정리"
+                                            <br><br>3. "Noble" - 유니온 육성 길드
+                                            <br>- 가입조건 : 노블에 본캐가 있을 것 혹은 노블에 본캐가 있는 사람의 추천으로 들어오신 분들 중 레벨이 낮은 분
+                                            <br>- 유니온 캐릭터 육성 시 자유 가입
+                                            <br>- 유니온 캐릭터 육성 종료 시 자가 탈퇴 권장
+                                            <br>- 미접자 관리 : 14일 미접시 추방
+                                        </td>
+                                        <td>
+                                            1. 본 노블 길드는 매너, 상호간 예의를 중시하며 사기/스틸/비매너 욕설 등의 행동은 지양합니다.
+                                            ** 예외 강원기 욕은 가능(스타포스, 로얄, 큐브 등등,,, 망했을때 한탄 정도)
+                                            <br>2. 길드 처리규정(비매너, 보스판매사기, 길드 내부 활동간 경고, 이중길드 등)
+                                            - 수다방/디코방 등에서 제보되는 내용이나 싸움, 혹은 간부진이 본 상황중에 선을 넘는 행동, 분쟁 유발의 소지가 있는 종교/정치적 발언
+                                            &nbsp;- 장난 그만 쳐달라, 하지말라는 이야기 후에도 선넘는 장난 등이 발견/누적될 시 1회 경고 누적 시 수다방/디스코드 추방, 길드 추방
+                                            &nbsp;- 경고 과정에선 1:1 톡이나 내용 전달이 있을수 있고, 그 후에도 조치사항/변화가 없으면 길드 추방 진행
+                                            - 그외 기타 인게임 채팅 등에서 과도한 기만(스타포스 이벤날이라던가 뭐 드셨다던가 할때 망한사람 옆에서 기만 등)
+                                            &nbsp;- 이를테면 아쿠아틱 뭐 하나 잘먹었다는데 레전템 링크해서 기를 죽인다던지, 스타포스 다 터진사람 얘기하는데 자기는 몇개 올렸다던지
+                                            &nbsp;- 상식선에서 이해할수 없는 기만/약올림 행동 강력히 제제. 발견/제보 경고 2회 누적시 길드 추방(사안에 따라 즉시 추방 가능)
+                                            - 이중길드 : 노블 및 도탁스 ,20세기 사람들, Noble 이외 길드에 본캐 혹은 부캐가 가입된 것이 적발되면 경고없이 추방입니다
+                                            &nbsp;- 부캐용 개인 길드는 허용, 본인계정 이외에 다른 사람이나 다른 계정인원이 있으면 안 됨
+                                            ** 개인간 분쟁은 길드에서 관여하지 않고 추후 문제가 생길시에 경고 및 추방될 수 있습니다
+                                            <br>3. 길드 플래그 수로 규정
+                                            - 노블 : 본캐 플래그와 수로 필참, 부캐 수로만 필참
+                                            - 20세기 : 가입된 캐릭 중 3캐릭 플래그 혹은 수로(100점 이상) 참여
+                                            - 도탁스 : 가입된 캐릭 중 1캐릭 플래그 & 수로 참여
+                                            - 노블압수 면제권 : 노블길드 내, 요청하는 캐릭터에한해서 이유불문하고 6개월 1번 면제. (1월 1일/ 7월 1일 초기화)
+                                            <br>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="footer"></div>
+        </div>
+    </div>
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+    <script src="dist/js/waves.js"></script>
+    <script src="dist/js/sidebarmenu.js"></script>
+    <script src="dist/js/custom.min.js"></script>
+</body>
+</html>
 
-        if (pageUrl !== location.pathname) {
-            history.pushState({ path: pageUrl }, null, pageUrl);
-            var popStateEvent = new PopStateEvent('popstate', { state: null });
-            dispatchEvent(popStateEvent); // event 발생시키기
+<script>
+    function isEmpty(value) {
+        if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
+    $(document).ready(function() {
+        $('#header').load('common/header.html');
+        $('#aside').load('common/aside.html');
+        $('#footer').load('common/footer.html');
+    });
 </script>
+

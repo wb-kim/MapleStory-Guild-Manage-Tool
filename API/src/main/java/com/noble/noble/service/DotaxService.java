@@ -54,4 +54,8 @@ public class DotaxService {
     public List<String> getDotaxNickname() {
         return dotaxMapper.getDotaxNickname();
     }
+
+    public int getDotaxCount() {
+        return dotaxMapper.getDotaxCount();
+    }
 }

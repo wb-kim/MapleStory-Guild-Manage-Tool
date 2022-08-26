@@ -74,6 +74,17 @@ public class MainAPI {
         return response;
     }
 
+    @PostMapping("/Main/getTotalCount")
+    public List<Integer> getTotalCount() {
+        List<Integer> response = new ArrayList<>();
+
+        response.add(nobleService.getNobleCount());
+        response.add(centuryService.getCenturyCount());
+        response.add(dotaxService.getDotaxCount());
+        
+        return response;
+    }
+
     @PostMapping("/Main/getTotalList")
     public List<Map<String, Object>> getTotalList(@RequestBody Map<String, Object> param) {
         List<Map<String, Object>> response = new ArrayList<>();

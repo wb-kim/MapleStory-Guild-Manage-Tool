@@ -19,4 +19,5 @@ public interface CenturyMapper {
     public Century getCentury(int idx);
     public int deleteCenturyFromMain(String mainChar);
     public List<String> getCenturyNickname();
+    public int getCenturyCount();
 }

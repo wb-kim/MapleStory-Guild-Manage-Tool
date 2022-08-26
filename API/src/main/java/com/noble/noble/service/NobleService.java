@@ -62,4 +62,8 @@ public class NobleService {
     public List<String> getAdmin() {
         return nobleMapper.getAdmin();
     }
+
+    public int getNobleCount() {
+        return nobleMapper.getNobleCount();
+    }
 }

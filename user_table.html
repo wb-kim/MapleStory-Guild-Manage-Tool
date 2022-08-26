@@ -12,6 +12,25 @@
     body {
         font-family: '나눔 고딕';
     }
+    .off-screen {
+	    display: none;
+    }
+    #nav {
+        width: 100%;
+        text-align: center;
+    }
+    #nav a {
+        display: inline-block;
+        padding: 3px 5px;
+        margin-right: 10px;
+        background: #ccc;
+        color: #000;
+        text-decoration: none;
+    }
+    #nav a.active {
+        background: #333;
+        color: #fff;
+    }
 </style>
 
 <body>
@@ -30,20 +49,23 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">노블 전체</h4>
-                            <table style="margin-bottom: 1vw;">
+                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">길드 전체 인원 명단</h4>
+                            <table style="margin-bottom: 1vw; float: left;">
                                 <tbody>
                                 <tr>
-                                    <td style="width: 300px" class="padding_none"><input id="ipt_search_str" class="form-control" placeholder="찾을 닉네임을 입력하세요."/></td>
-                                    <td style="width: 10px"></td>
-                                    <td class="padding_none">
+                                    <td style="width: 300px;">
+                                        <input id="ipt_search_str" class="form-control" placeholder="찾을 닉네임을 입력하세요."/>
+                                    </td>
+                                    <td style="width: 10px;"></td>
+                                    <td>
                                         <a class="btn btn-primary" style="width: 100px;" onclick="createTable()"><i class="me-2 mdi mdi-search-web"></i>검색</a>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <div class="table-responsive">
-                                <table class="table table-bordered" style="text-align: center; table-layout: fixed; font-size: small">
+                            <div style="float: right; margin-right: 1vw" id="total"></div>
+                            <div class="table-responsive" style="display: inline-block;">
+                                <table id="products" class="table table-bordered" style="text-align: center; table-layout: fixed; font-size: small">
                                     <thead class="table-light">
                                         <tr>
                                             <th scope="col">본캐</th>
@@ -52,14 +74,15 @@
                                             <th scope="col" colspan="2">20세기(우수노블)</th>
                                             <th scope="col">도탁스</th>
                                             <th scope="col" colspan="4">도탁스(우수노블)</th>
-                                            <th scope="col">면제권</th>
+                                            <th scope="col" id="order" value="idx ASC" onClick="changeOrder()" style="cursor:pointer;">
+                                                <i class="me-2 mdi mdi-sort"></i>면제권
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody id="total_table">
                                     </tbody>
                                 </table>
                             </div>
-                            <div id="paging"></div>
                         </div>
                     </div>
                 </div>
@@ -77,10 +100,6 @@
 </html>
 
 <script>
-    var tableStr = {};
-    var size = 0;
-
-
     function isEmpty(value) {
         if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
             return true;
@@ -93,22 +112,104 @@
         $('#header').load('common/header.html');
         $('#aside').load('common/aside.html');
         $('#footer').load('common/footer.html');
+        totalCount();
         createTable();
-
+        pagination();
         $('#ipt_search_str').keypress(function (event) {
             if(event.keyCode == '13'){
-                createTable();
+                searchData();
             }
         })
     });
 
+    function searchData() {
+        $('#order').attr("value", "idx ASC");
+        $('#order').html('<i class="me-2 mdi mdi-sort"></i>면제권')
+        createTable();
+    }
+
+    function changeOrder() {
+        if ($('#order').attr("value") == "idx ASC") {
+            $('#order').attr("value", "exempted_date ASC");
+            $('#order').html('<i class="me-2 mdi mdi-sort-ascending"></i>면제권')
+            createTable();
+        } else if ($('#order').attr("value") == "exempted_date ASC") {
+            $('#order').attr("value", "exempted_date DESC");  
+            $('#order').html('<i class="me-2 mdi mdi-sort-descending"></i>면제권')
+            createTable();
+        } else {
+            $('#order').attr("value", "exempted_date ASC");      
+            $('#order').html('<i class="me-2 mdi mdi-sort-ascending"></i>면제권')
+            createTable();
+        }
+    }
     function pagination() {
+        var rowPerPage = 20;
+
+        $('#nav').remove();
+        var $products = $('#products');
+
+        $products.after('<div id="nav">');
+
+
+        var $tr = $($products).find('tbody tr');
+        var rowTotals = $tr.length;
+
+        var pageTotal = Math.ceil(rowTotals/ rowPerPage);
+        var i = 0;
+
+        for (; i < pageTotal; i++) {
+            $('<a href="#"></a>')
+                    .attr('rel', i)
+                    .html(i + 1)
+                    .appendTo('#nav');
+        }
+
+        $tr.addClass('off-screen')
+                .slice(0, rowPerPage)
+                .removeClass('off-screen');
+
+        var $pagingLink = $('#nav a');
+        $pagingLink.on('click', function (evt) {
+            evt.preventDefault();
+            var $this = $(this);
+            if ($this.hasClass('active')) {
+                return;
+            }
+            $pagingLink.removeClass('active');
+            $this.addClass('active');
+
+            var currPage = $this.attr('rel');
+            var startItem = currPage * rowPerPage;
+            var endItem = startItem + rowPerPage;
+
+            $tr.css('opacity', '0.0')
+                    .addClass('off-screen')
+                    .slice(startItem, endItem)
+                    .removeClass('off-screen')
+                    .animate({opacity: 1}, 300);
+
+        });
+
+        $pagingLink.filter(':first').addClass('active');
 
     }
+
+    function totalCount() {
+        $.ajax({
+            url: 'http://localhost:8845/Main/getTotalCount',
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(data){
+                $('#total').html("노블 : " + data[0] + "명, 20세기 : " + data[1] + "명, 도탁스 : " +data[2] + "명");
+            },
+        })
+    }
+
     function createTable() {
         var param = {};
         param.searchStr = $('#ipt_search_str').val();
-        param.order = 'idx ASC';
+        param.order = $('#order').attr("value");
         param.page = 1;
         param = JSON.stringify(param);
 
@@ -118,14 +219,11 @@
             type: 'POST',
             contentType: 'application/json',
             success: function(data){
-                size = data.length;
                 var str = '';
-                console.log(size);
                 
-                var idx = 0;
                 $.each(data, function(i) {
                     var exemptedDate = data[i].exemptedDate;
-                    
+
                     str += '<tr>';
                     str += '<th scope="row">' + data[i].main + '</th>';
                     str += '<td>' + (isEmpty(data[i].sub[0]) ? '' : data[i].sub[0]) + '</td>';
@@ -141,59 +239,18 @@
                     str += '<td>' + (isEmpty(data[i].dotaxUpper[3]) ? '' : data[i].dotaxUpper[3]) + '</td>';
                     str += '<td>' + (isEmpty(data[i].exemptedDate) ? '' : exemptedDate.split(" ")[0]) + '</td>'; 
                     str += '</tr>'
-
-                    if (idx == 19) {
-                        tableStr.push(str);
-                        idx = 0;
-                    }
-                    idx++;
                 });
+
+                if (str == '') {
+                    str = '<td scope="col" colspan="13">조회할 수 있는 데이터가 없습니다.</td>'
+                    $('#total_table').html(str);
+                    $('#nav').remove();
+                } else {
+                    $('#total_table').html(str);
+                    pagination();
+                }
             },
         })
-    }
-
-    function pageLink(curPage, totalPages, funName) {
-        var pageUrl = "";
-        
-        var pageLimit = 5;
-        var startPage = parseInt((curPage - 1) / pageLimit) * pageLimit + 1;
-        var endPage = startPage + pageLimit - 1;
-        
-        if (totalPages < endPage) {
-            endPage = totalPages;
-        }
-        
-        var nextPage = endPage + 1;
-        //console.log(curPage,"curPage,",startPage,"startPage,",endPage,"endPage,",nextPage,"nextPage")
-        
-        //맨 첫 페이지
-        if (curPage > 1 && pageLimit < curPage) {
-            pageUrl += "<a class='page first' href='javascript:" + funName + "(1);'><i class='fas fa-angle-double-left'></a>";
-        }
-        //이전 페이지
-        if (curPage > pageLimit) {
-            pageUrl += " <a class='page prev' href='javascript:" + funName + "(" + (startPage == 1 ? 1 : startPage - 1) + ");'><i class='fas fa-angle-left'></a>";
-        }
-        //~pageLimit 맞게 페이지 수 보여줌
-        for (var i = startPage; i <= endPage; i++) {
-            //현재페이지면 진하게 표시
-            if (i == curPage) {
-                pageUrl += " <a href='#'><strong>" + i + "</strong></a>"
-            } else {
-                pageUrl += " <a href='javascript:" + funName + "(" + i + ");'> " + i + " </a>";
-            }
-        }
-        //다음 페이지
-        if (nextPage <= totalPages) {
-            pageUrl += "<a class='page next' href='javascript:" + funName + "(" + (nextPage < totalPages ? nextPage : totalPages) + ");'><i class='fas fa-angle-right'></a>";
-        }
-        //맨 마지막 페이지
-        if (curPage < totalPages && nextPage < totalPages) {
-            pageUrl += "<a class='page last' href='javascript:" + funName + "(" + totalPages + ");'><i class='fas fa-angle-double-right'></a>";
-        }
-        //console.log(pageUrl);
-        
-        return pageUrl;
     }
 </script>
 

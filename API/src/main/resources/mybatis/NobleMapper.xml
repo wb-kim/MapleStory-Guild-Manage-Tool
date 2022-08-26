@@ -65,4 +65,8 @@
     <select id="getAdmin" resultType="String">
         SELECT nickname FROM noble WHERE admin = 1
     </select>
+
+    <select id="getNobleCount" resultType="int">
+        SELECT COUNT(*) FROM noble
+    </select>
 </mapper>
