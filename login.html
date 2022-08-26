@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>리부트2 노블 길드 사이트</title>
+    <link href="dist/css/style.min.css" rel="stylesheet">
+</head>
+
+<style>
+    body {
+        font-family: '나눔 고딕';
+    }
+</style>
+
+<body style="background-color: #364150;">
+    <div style="width: 450px; background-color: rgb(151, 150, 150); position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%,-50%) !important;">
+        <form id="frm_login">
+            <div style="padding: 30px;">
+                <div class="form-group col-md-12" style="line-height: 45px">
+                    <div class="col-md-12" style="display: flex;">
+                        <input class="form-control" style="margin-right: 10px;" id="code">
+                        <button type="submit" class="btn btn-success"  style="width: 120px; background: #92d050; font-size: 16px;">로그인</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+</body>
+</html>
+
+<script>
+    function isEmpty(value) {
+        if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    $(function() {
+        var form = $('#frm_login');
+        form.on("submit", function(e) {
+            e.preventDefault();
+            var param = {};
+            param.code = $('#code').val();
+            param = JSON.stringify(param);
+            $.ajax({
+                url: 'http://localhost:8845/Main/login', 
+                type: 'POST',
+                contentType: 'application/json',
+                data: param,
+                success: function(data){
+                    if(data === "SUCCESS"){
+                        location.href = "index.html";
+                    } else {
+                        alert("코드가 맞지 않습니다.");
+                    }
+                }
+            });
+        });
+    });
+
+
+</script>
+

@@ -23,7 +23,9 @@
     <select id="getNobleList" parameterType="map" resultType="Noble">
         SELECT * FROM noble
             <if test="type == 1 and searchStr != ''"> WHERE nickname LIKE '%${searchStr}%'</if>
-            <if test="type == 2 and searchStr != ''"> WHERE job LIKE '%${searchStr}%'</if>
+            <if test="type == 2 and searchStr != ''"> WHERE level >= ${searchStr}</if>
+            <if test="type == 3 and searchStr != ''"> WHERE job LIKE '%${searchStr}%'</if>
+            <if test="type == 4 and searchStr != ''"> WHERE dojang >= ${searchStr}</if>
         ORDER BY ${order}
     </select>
 

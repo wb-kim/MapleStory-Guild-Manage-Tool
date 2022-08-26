@@ -61,11 +61,9 @@ public class AdminAPI {
         
         String searchStr = param.get("searchStr") != null ? (String)param.get("searchStr") : "";
         String order = param.get("order") != null ? (String)param.get("order") : "idx ASC";
-        int page = param.get("page") != null ? (int)param.get("page") : 1;
 
         searchParam.put("searchStr", searchStr);
         searchParam.put("order", order);
-        searchParam.put("offset", commonService.offset(page));
 
         List<Noble> nobleList = nobleService.getNobleList(searchParam);
 

@@ -24,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 public class MainAPI {
-    private final String NOBLE_USER_KEY = "noble127";
-    private final String NOBLE_ADMIN_KEY = "nobleherohibi";    
+    private final String NOBLE_USER_KEY = "test1";
+    private final String NOBLE_ADMIN_KEY = "test2";    
 
     @Autowired private CommonService commonService;
     @Autowired private NobleService nobleService;
@@ -44,9 +44,11 @@ public class MainAPI {
         try {
             if (code.equals(NOBLE_USER_KEY)) {
                 session.setAttribute("data", "USER");
+                session.setMaxInactiveInterval(3600);
                 response = "SUCCESS";
             } else if (code.equals(NOBLE_ADMIN_KEY)) {
                 session.setAttribute("data", "ADMIN");
+                session.setMaxInactiveInterval(3600);
                 response = "SUCCESS";
             } else {
                 response = "ERROR";
@@ -61,6 +63,7 @@ public class MainAPI {
     @PostMapping("/Main/session")
     public String session(HttpServletRequest request) {
         HttpSession session = request.getSession();
+        System.out.println(session);
         return (String)session.getAttribute("data");
     }
 
@@ -93,11 +96,9 @@ public class MainAPI {
         
         String searchStr = param.get("searchStr") != null ? (String)param.get("searchStr") : "";
         String order = param.get("order") != null ? (String)param.get("order") : "idx ASC";
-        int page = param.get("page") != null ? (int)param.get("page") : 1;
 
         searchParam.put("searchStr", searchStr);
         searchParam.put("order", order);
-        searchParam.put("offset", commonService.offset(page));
 
         List<Noble> nobleList = nobleService.getNobleListForTotal(searchParam);
         List<String> nobleNicknameList = new ArrayList<>();
@@ -164,11 +165,10 @@ public class MainAPI {
         
         String searchStr = param.get("searchStr") != null ? (String)param.get("searchStr") : "";
         String order = param.get("order") != null ? (String)param.get("order") : "idx ASC";
-        int page = param.get("page") != null ? (int)param.get("page") : 1;
-
+        int type = param.get("type") != null ? (int)param.get("type") : 1;
         searchParam.put("searchStr", searchStr);
         searchParam.put("order", order);
-        searchParam.put("offset", commonService.offset(page));
+        searchParam.put("type", type);
 
         List<Noble> nobleList = nobleService.getNobleList(searchParam);
 
