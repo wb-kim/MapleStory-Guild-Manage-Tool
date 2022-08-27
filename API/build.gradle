@@ -32,7 +32,7 @@ dependencies {
 }
 
 bootWar {
-	archiveName('noble.war')
+	archiveName('api.war')
 }
 
 tasks.named('test') {

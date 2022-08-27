@@ -50,7 +50,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">가입 조건 및 규칙</h4>
-                            <table class="table table-bordered" style="table-layout: fixed;">
+                            <table class="table table-bordered" style="display: none;" id="checkTable">
                                 <thead class="table-light">
                                     <tr style="text-align: center; font-size: medium;">
                                         <th scope="col" style="font-weight: bold;">길드 가입 및 캐릭터 규칙</th>
@@ -167,12 +167,36 @@
         sessionCheck();
     });
 
+    function logout() {
+        $.ajax({
+            url: 'https://reboot2noble.kro.kr/api/Main/logout', 
+            type: 'POST',
+            success: function(data){
+                if (data == "SUCCESS") {
+                    location.href = "login.html";
+                }
+            }
+        }); 
+    }
+
     function sessionCheck() {
         $.ajax({
-            url: 'http://localhost:8845/Main/session', 
+            url: 'https://reboot2noble.kro.kr/api/Main/session', 
             type: 'POST',
             success: function(data){
                 console.log(data);
+                if (data == "") {
+                    $('#navbarDropdown').html('로그인');
+                    alert('로그인이 되지 않았습니다.\n로그인 페이지로 이동합니다.');
+                    location.href = "login.html";
+                } else if (data == "ADMIN") {
+                    $('#checkTable').attr('style', 'table-layout: fixed;');
+                    $('#asideAdmin').attr('style', '');
+                    $('#navbarDropdown').html('로그아웃');
+                } else {
+                    $('#checkTable').attr('style', 'table-layout: fixed;');
+                    $('#navbarDropdown').html('로그아웃');
+                }
             }
         });
     }

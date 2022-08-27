@@ -74,13 +74,13 @@
                             </table>
                             <div style="float: right; margin-right: 1vw" id="total"></div>
                             <div class="table-responsive" style="display: inline-block;">
-                                <table id="products" class="table table-bordered" style="text-align: center; table-layout: fixed; font-size: small">
+                                <table id="products" class="table table-bordered" style="display: none;">
                                     <thead class="table-light">
                                         <tr>
                                             <th scope="col">닉네임</th>
-                                            <th scope="col" id="levelOrder" value="level DESC" onClick="changeLevelOrder()"><i class="me-2 mdi mdi-sort-descending"></i>레벨</th>
+                                            <th scope="col" id="levelOrder" value="level DESC" onClick="changeLevelOrder()" style="cursor:pointer;"><i class="me-2 mdi mdi-sort-descending"></i>레벨</th>
                                             <th scope="col">직업</th>
-                                            <th scope="col" id="dojangOrder" value="" onClick="changeDojangOrder()"><i class="me-2 mdi mdi-sort"></i>무릉</th>
+                                            <th scope="col" id="dojangOrder" value="" onClick="changeDojangOrder()" style="cursor:pointer;"><i class="me-2 mdi mdi-sort"></i>무릉</th>
                                         </tr>
                                     </thead>
                                     <tbody id="total_table">
@@ -120,6 +120,7 @@
         $('#header').load('common/header.html');
         $('#aside').load('common/aside.html');
         $('#footer').load('common/footer.html');
+        sessionCheck();
         createTable();
         pagination();
         $('#ipt_search_str').keypress(function (event) {
@@ -150,6 +151,40 @@
         })
     });
 
+    function logout() {
+        $.ajax({
+            url: 'https://reboot2noble.kro.kr/api/Main/logout', 
+            type: 'POST',
+            success: function(data){
+                if (data == "SUCCESS") {
+                    location.href = "login.html";
+                }
+            }
+        }); 
+    }
+
+    function sessionCheck() {
+        $.ajax({
+            url: 'https://reboot2noble.kro.kr/api/Main/session', 
+            type: 'POST',
+            success: function(data){
+                console.log(data);
+                if (data == "") {
+                    $('#navbarDropdown').html('로그인');
+                    alert('로그인이 되지 않았습니다.\n로그인 페이지로 이동합니다.');
+                    location.href = "login.html";
+                } else if (data == "ADMIN") {
+                    $('#products').attr('style', 'text-align: center; table-layout: fixed; font-size: small;');
+                    $('#asideAdmin').attr('style', '');
+                    $('#navbarDropdown').html('로그아웃');
+                } else {
+                    $('#products').attr('style', 'text-align: center; table-layout: fixed; font-size: small;');
+                    $('#navbarDropdown').html('로그아웃');
+                }
+            }
+        });
+    }
+
     function searchData() {
         $('#levelOrder').attr("value", "level DESC");
         order = $('#levelOrder').attr("value");
@@ -177,7 +212,7 @@
             createTable();
         } else {
             $('#levelOrder').attr("value", "level DESC");      
-            $('#levelOrder').html('<i class="me-2 mdi mdi-sort-ascending"></i>레벨');
+            $('#levelOrder').html('<i class="me-2 mdi mdi-sort-descending"></i>레벨');
             order = $('#levelOrder').attr("value");
             $('#dojangOrder').attr("value", "");
             $('#dojangOrder').html('<i class="me-2 mdi mdi-sort"></i>무릉');
@@ -188,21 +223,21 @@
     function changeDojangOrder() {
         if ($('#dojangOrder').attr("value") == "dojang DESC") {
             $('#dojangOrder').attr("value", "dojang ASC");
-            $('#dojangOrder').html('<i class="me-2 mdi mdi-sort-decending"></i>무릉');
+            $('#dojangOrder').html('<i class="me-2 mdi mdi-sort-ascending"></i>무릉');
             order = $('#dojangOrder').attr("value");
             $('#levelOrder').attr("value", "");
             $('#levelOrder').html('<i class="me-2 mdi mdi-sort"></i>레벨');
             createTable();
         } else if ($('#dojangOrder').attr("value") == "dojang ASC") {
             $('#dojangOrder').attr("value", "dojang DESC");  
-            $('#dojangOrder').html('<i class="me-2 mdi mdi-sort-ascending"></i>무릉');
+            $('#dojangOrder').html('<i class="me-2 mdi mdi-sort-descending"></i>무릉');
             order = $('#dojangOrder').attr("value");
             $('#levelOrder').attr("value", "");
             $('#levelOrder').html('<i class="me-2 mdi mdi-sort"></i>레벨');
             createTable();
         } else {
             $('#dojangOrder').attr("value", "dojang DESC");      
-            $('#dojangOrder').html('<i class="me-2 mdi mdi-sort-decending"></i>무릉');
+            $('#dojangOrder').html('<i class="me-2 mdi mdi-sort-descending"></i>무릉');
             order = $('#dojangOrder').attr("value");
             $('#levelOrder').attr("value", "");
             $('#levelOrder').html('<i class="me-2 mdi mdi-sort"></i>레벨');
@@ -270,7 +305,7 @@
         param = JSON.stringify(param);
 
         $.ajax({
-            url: 'http://localhost:8845/Main/getDojangList',
+            url: 'https://reboot2noble.kro.kr/api/Main/getDojangList',
             data: param,
             type: 'POST',
             contentType: 'application/json',

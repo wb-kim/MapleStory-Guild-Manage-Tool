@@ -68,15 +68,15 @@
                                 <table id="products" class="table table-bordered" style="display: none;">
                                     <thead class="table-light">
                                         <tr>
+                                            <th scope="col">닉네임</th>
                                             <th scope="col">본캐</th>
-                                            <th scope="col">부캐</th>
-                                            <th scope="col" colspan="3">20세기사람들</th>
-                                            <th scope="col" colspan="2">20세기(우수노블)</th>
-                                            <th scope="col">도탁스</th>
-                                            <th scope="col" colspan="4">도탁스(우수노블)</th>
-                                            <th scope="col" id="order" value="idx ASC" onClick="changeOrder()" style="cursor:pointer;">
-                                                <i class="me-2 mdi mdi-sort"></i>면제권
-                                            </th>
+                                            <th scope="col">레벨</th>
+                                            <th scope="col">직업</th>
+                                            <th scope="col">무릉</th>
+                                            <th scope="col">무릉 동의</th>
+                                            <th scope="col">면제권</th>
+                                            <th scope="col">승인</th>
+                                            <th scope="col">관리</th>
                                         </tr>
                                     </thead>
                                     <tbody id="total_table">
@@ -100,6 +100,8 @@
 </html>
 
 <script>
+    var total = 0;
+
     function isEmpty(value) {
         if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
             return true;
@@ -150,34 +152,19 @@
                     $('#asideAdmin').attr('style', '');
                     $('#navbarDropdown').html('로그아웃');
                 } else {
-                    $('#products').attr('style', 'text-align: center; table-layout: fixed; font-size: small;');
                     $('#navbarDropdown').html('로그아웃');
+                    alert('길드 관리자가 아닙니다.\n메인 페이지로 이동합니다.');
+                    location.href = "index.html";
+                
                 }
             }
         });
     }
 
     function searchData() {
-        $('#order').attr("value", "idx ASC");
-        $('#order').html('<i class="me-2 mdi mdi-sort"></i>면제권')
         createTable();
     }
 
-    function changeOrder() {
-        if ($('#order').attr("value") == "idx ASC") {
-            $('#order').attr("value", "exempted_date ASC");
-            $('#order').html('<i class="me-2 mdi mdi-sort-ascending"></i>면제권')
-            createTable();
-        } else if ($('#order').attr("value") == "exempted_date ASC") {
-            $('#order').attr("value", "exempted_date DESC");  
-            $('#order').html('<i class="me-2 mdi mdi-sort-descending"></i>면제권')
-            createTable();
-        } else {
-            $('#order').attr("value", "exempted_date ASC");      
-            $('#order').html('<i class="me-2 mdi mdi-sort-ascending"></i>면제권')
-            createTable();
-        }
-    }
     function pagination() {
         var rowPerPage = 20;
 
@@ -254,25 +241,24 @@
             type: 'POST',
             contentType: 'application/json',
             success: function(data){
-                var str = '';
+                if (total == 0) {
+                    total = data.length;
+                    $('#total').html("노블 : " + total + "명");
+                }
                 
                 $.each(data, function(i) {
                     var exemptedDate = data[i].exemptedDate;
 
-                    str += '<tr>';
-                    str += '<th scope="row">' + data[i].main + '</th>';
-                    str += '<td>' + (isEmpty(data[i].sub[0]) ? '' : data[i].sub[0]) + '</td>';
-                    str += '<td>' + (isEmpty(data[i].century[0]) ? '' : data[i].century[0])+ '</td>';
-                    str += '<td>' + (isEmpty(data[i].century[1]) ? '' : data[i].century[1])+ '</td>';
-                    str += '<td>' + (isEmpty(data[i].century[2]) ? '' : data[i].century[2])+ '</td>';
-                    str += '<td>' + (isEmpty(data[i].centuryUpper[0]) ? '' : data[i].centuryUpper[0]) + '</td>';
-                    str += '<td>' + (isEmpty(data[i].centuryUpper[1]) ? '' : data[i].centuryUpper[1]) + '</td>';
-                    str += '<td>' + (isEmpty(data[i].dotax[0]) ? '' : data[i].dotax[0]) + '</td>';
-                    str += '<td>' + (isEmpty(data[i].dotaxUpper[0]) ? '' : data[i].dotaxUpper[0]) + '</td>';
-                    str += '<td>' + (isEmpty(data[i].dotaxUpper[1]) ? '' : data[i].dotaxUpper[1]) + '</td>';
-                    str += '<td>' + (isEmpty(data[i].dotaxUpper[2]) ? '' : data[i].dotaxUpper[2]) + '</td>';
-                    str += '<td>' + (isEmpty(data[i].dotaxUpper[3]) ? '' : data[i].dotaxUpper[3]) + '</td>';
-                    str += '<td>' + (isEmpty(data[i].exemptedDate) ? '' : exemptedDate.split(" ")[0]) + '</td>'; 
+                    str += '<tr id="userRow" data-num=' + data[i].idx + '>';
+                    str += '<th scope="row">' + data[i].nickname + '</th>';
+                    str += '<td>' + (isEmpty(data[i].mainChar) ? '' : data[i].mainChar) + '</td>';
+                    str += '<td>' + (isEmpty(data[i].level) ? '' : data[i].level)+ '</td>';
+                    str += '<td>' + (isEmpty(data[i].job) ? '' : data[i].job)+ '</td>';
+                    str += '<td>' + (isEmpty(data[i].dojang) ? '' : data[i].dojang) + '</td>';
+                    str += '<td>' + ((data[i].dojangAgree == 0) ? '거절' : '동의') + '</td>';
+                    str += '<td>' + (isEmpty(data[i].exemptedDate) ? '' : '<input type="checkbox" checked readonly>') + '</td>';    
+                    str += '<td>' + (isEmpty(data[i].grantor) ? '' : data[i].grantor) + '</td>';
+                    str += '<td><button type="submit">탈퇴<button></td>';
                     str += '</tr>'
                 });
 
