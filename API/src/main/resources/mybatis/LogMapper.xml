@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.noble.noble.mapper.LogMapper">
     <insert id="insertLog" parameterType="Log">
-        INSERT INTO log (nickname, what, reason, who)
-        VALUES (#{nickname}, #{what}, #{reason}, #{who})
+        INSERT INTO log (nickname, what, reason, who, create_dt) VALUES (#{nickname}, #{what}, #{reason}, #{who}, #{createDt})
     </insert>
 
     <select id="getLogList" parameterType="map" resultType="Log">

@@ -31,7 +31,7 @@ public class DotaxService {
         return dotaxMapper.getMainCharFromDotax(nickname);
     }
 
-    public List<Dotax> getDotaxList(Map<String, Object> param) {
+    public List<Dotax> getDotaxList(Map<String, Object> param) {   
         return dotaxMapper.getDotaxList(param);
     }
 

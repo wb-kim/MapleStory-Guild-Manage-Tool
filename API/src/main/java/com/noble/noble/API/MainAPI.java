@@ -24,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 public class MainAPI {
-    private final String NOBLE_USER_KEY = "test1";
-    private final String NOBLE_ADMIN_KEY = "test2";    
+    private final String NOBLE_USER_KEY = "noble127";
+    private final String NOBLE_ADMIN_KEY = "nobleherohibi";    
 
     @Autowired private CommonService commonService;
     @Autowired private NobleService nobleService;
@@ -103,14 +103,18 @@ public class MainAPI {
         List<Noble> nobleList = nobleService.getNobleListForTotal(searchParam);
         List<String> nobleNicknameList = new ArrayList<>();
         for (Noble noble : nobleList) {
-            nobleNicknameList.add(noble.getNickname());
+            if (noble.getDotax() == 1) {
+                String dotaxNickname = noble.getNickname() + "(도탁스)";
+                nobleNicknameList.add(dotaxNickname);
+            } else {
+                nobleNicknameList.add(noble.getNickname());
+            }
         }
         
         if (searchStr != "") {
             List<String> nobleSubList = nobleService.getMainCharFromNoble(searchStr);
             for (String mainChar : nobleSubList) {
-                System.out.println(nobleNicknameList.indexOf(mainChar) + " " + mainChar);
-                if (nobleNicknameList.indexOf(mainChar) < 0) {
+                if (!nobleNicknameList.contains(mainChar)) {
                     Noble noble = new Noble();
                     noble.setNickname(mainChar);
                     nobleNicknameList.add(mainChar);
@@ -120,8 +124,7 @@ public class MainAPI {
 
             List<String> centuryList = centuryService.getMainCharFromCentury(searchStr);
             for (String mainChar : centuryList) {
-                System.out.println(nobleNicknameList.indexOf(mainChar) + " " + mainChar);
-                if (nobleNicknameList.indexOf(mainChar) < 0) {
+                if (!nobleNicknameList.contains(mainChar)) {
                     Noble noble = new Noble();
                     noble.setNickname(mainChar);
                     nobleNicknameList.add(mainChar);
@@ -131,8 +134,7 @@ public class MainAPI {
 
             List<String> dotaxList = dotaxService.getMainCharFromDotax(searchStr);
             for (String mainChar : dotaxList) {
-                System.out.println(nobleNicknameList.indexOf(mainChar) + " " + mainChar);
-                if (nobleNicknameList.indexOf(mainChar) < 0) {
+                if (!nobleNicknameList.contains(mainChar)) {
                     Noble noble = new Noble();
                     noble.setNickname(mainChar);
                     nobleNicknameList.add(mainChar);
@@ -144,6 +146,7 @@ public class MainAPI {
         for (Noble noble : nobleList) {
             Map<String, Object> temp = new HashMap<>();
             temp.put("main", noble.getNickname());
+            temp.put("admin", noble.getAdmin());
             temp.put("sub", nobleService.getNobleSubList(noble.getNickname()));
             temp.put("century", centuryService.getCenturyListFromMain(noble.getNickname()));
             temp.put("centuryUpper", centuryService.getCenturyUpperListFromMain(noble.getNickname()));

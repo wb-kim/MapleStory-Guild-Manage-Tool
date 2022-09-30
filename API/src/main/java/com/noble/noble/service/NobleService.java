@@ -47,6 +47,14 @@ public class NobleService {
         return nobleMapper.updateNoble(noble) > 0 ? true : false;
     }
 
+    public boolean useExempt(Map<String, Object> param) {
+        return nobleMapper.useExempt(param) > 0 ? true : false;
+    }
+
+    public boolean warning(int idx) {
+        return nobleMapper.warning(idx) > 0 ? true : false;
+    }
+
     public boolean deleteNobleFromMain(String mainChar) {
         return nobleMapper.deleteNobleFromMain(mainChar) > 0 ? true : false;        
     }

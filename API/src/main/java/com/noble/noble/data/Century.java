@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class Century {
-    private int idx;
-    private String nickname;
-    private String mainChar;
-    private int level;
-    private String job;
-    private int upperNoble;
-    private String grantor;
+    private int idx = -1;
+    private String nickname = "";
+    private String mainChar = "";
+    private int level = -1;
+    private String job = "";
+    private int upperNoble = -1;
+    private String grantor = "";
 }

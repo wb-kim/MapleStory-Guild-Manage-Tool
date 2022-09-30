@@ -14,15 +14,14 @@
         SELECT nickname FROM dotax WHERE main_char = #{mainChar} AND upper_noble = 1 AND dotaxer = 0;
     </select>
 
-    <select id="getDotaxList" parameterType="map" resultType="String">
+    <select id="getDotaxList" parameterType="map" resultType="Dotax">
         SELECT * FROM dotax
-            <if test="type == 1 and searchStr != ''"> WHERE nickname LIKE '%${searchStr}%'</if>
-            <if test="type == 2 and searchStr != ''"> WHERE job LIKE '%${searchStr}%'</if>
+            <if test="searchStr != ''"> WHERE nickname LIKE '%${searchStr}%'</if>
         ORDER BY ${order}
     </select>
 
     <select id="getMainCharFromDotax" parameterType="String" resultType="String">
-        SELECT main_char FROM dotax WHERE nickname LIKE '%${searchStr}%' AND main_char is not null AND dotaxer = 0
+        SELECT main_char FROM dotax WHERE nickname LIKE '%${searchStr}%' AND main_char != '' AND dotaxer = 0
     </select>
 
     <select id="getDotax" parameterType="int" resultType="Dotax">
@@ -32,12 +31,12 @@
     <update id="updateDotax" parameterType="Dotax">
         UPDATE dotax
             <set>
-                <if test="nickname != null or nickname != ''">nickname = #{nickname}</if>
-                <if test="mainChar != null or mainChar != ''">main_char = #{mainChar}</if>
-                <if test="level != null or level != ''">level = #{level}</if>
-                <if test="job != null or job != ''">job = #{job}</if>
-                <if test="upperNoble != null or upperNoble != ''">upper_noble = #{upperNoble}</if>
-                <if test="grantor != null or grantor != ''">grantor = #{grantor}</if>
+                <if test="nickname != null or nickname != ''">nickname = #{nickname},</if>
+                <if test="mainChar != null or mainChar != ''">main_char = #{mainChar},</if>
+                <if test="level != null or level != -1">level = #{level},</if>
+                <if test="job != null or job != ''">job = #{job},</if>
+                <if test="upperNoble != null or upperNoble != -1">upper_noble = #{upperNoble},</if>
+                <if test="grantor != null or grantor != ''">grantor = #{grantor},</if>
             </set>
         WHERE idx = #{idx}
     </update>

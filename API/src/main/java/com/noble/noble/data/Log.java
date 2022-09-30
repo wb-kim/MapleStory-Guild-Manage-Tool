@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class Log {
-    private int idx;
-    private String nickname;
-    private String what;
-    private String reason;
-    private String who;
-    private String when;
+    private int idx = -1;
+    private String nickname = "";
+    private String what = "";
+    private String reason = "";
+    private String who = "";
+    private String createDt = "";
 }

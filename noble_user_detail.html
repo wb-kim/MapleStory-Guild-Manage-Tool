@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>리부트2 노블 길드 사이트</title>
+    <link href="dist/css/style.min.css" rel="stylesheet">
+</head>
+
+<style>
+    :root {
+        --button-color: #ffffff;
+        --button-bg-color: #0d6efd;
+        --button-hover-bg-color: #025ce2;
+    }
+
+    button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        
+        background: var(--button-bg-color);
+        color: var(--button-color);
+        
+        margin: 0;
+        padding: 3px 6px;
+        
+        font-family: '나눔 고딕';
+        font-weight: 400;
+        text-align: center;
+        text-decoration: none;
+        
+        border: none;
+        border-radius: 4px;
+        
+        display: inline-block;
+        width: auto;
+        
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        
+        cursor: pointer;
+        
+        transition: 0.5s;
+    }
+
+    button.success {
+        --button-bg-color: #28a745;
+        --button-hover-bg-color: #218838;
+    }
+
+    button.error {
+        --button-bg-color: #dc3545;
+        --button-hover-bg-color: #c82333;
+    }
+
+    button.warning {
+        --button-color: #212529;
+        --button-bg-color: #ffc107;
+        --button-hover-bg-color: #e0a800;
+    }
+
+    button:active,
+    button:hover,
+    button:focus {
+        background: var(--button-hover-bg-color);
+        outline: 0;
+    }
+    button:disabled {
+        opacity: 0.5;
+    }
+
+    body {
+        font-family: '나눔 고딕';
+    }
+    .off-screen {
+	    display: none;
+    }
+    #nav {
+        width: 100%;
+        text-align: center;
+    }
+    #nav a {
+        display: inline-block;
+        padding: 3px 5px;
+        margin-right: 10px;
+        background: #ccc;
+        color: #000;
+        text-decoration: none;
+    }
+    #nav a.active {
+        background: #333;
+        color: #fff;
+    }
+
+    .modal { 
+        position:fixed; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0%; left:0%; display:none;
+    }
+
+    .custom_modal_content {
+        width:400px; height:300px;
+        background:#fff; border-radius:10px;
+        position:relative; top:30%; left:50%;
+        margin-top:-50px; margin-left:-200px;
+        text-align:center;
+        box-sizing:border-box; padding:74px 0;
+        line-height:23px;
+    }
+</style>
+
+<body>
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <div id="main-wrapper" data-navbarbg="skin6" data-theme="light" data-layout="vertical" data-sidebartype="full"
+        data-boxed-layout="full">
+        <div id="header"></div>
+        <div id="aside"></div>
+        <div class="page-wrapper">
+            <div class="page-breadcrumb">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;" id="titleMessage">노블 길드원 가입/수정</h4>
+                            <form class="form-horizontal form-material mx-2">
+                                <div class="form-group">
+                                    <label class="col-md-12">닉네임</label>
+                                    <div class="col-md-12">
+                                        <input type="text" id="nickname"
+                                            class="form-control form-control-line">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="example-email" class="col-md-12">본캐(해당 캐릭이 본캐일 경우 비워둘 것)</label>
+                                    <div class="col-md-12">
+                                        <input type="text" id="mainChar"
+                                            class="form-control form-control-line">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: flex;">
+                                    <div class="col-md-2">
+                                        <span>무릉 공개 동의</span>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <input type="checkbox" id="dojangAgree">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <span>도탁스</span>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <input type="checkbox" id="dotax">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>승인자</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="adminList">
+                                        </select>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12" id="buttonMessage" style="padding-right: 30px;">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="footer"></div>
+        </div>
+    </div>
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+    <script src="dist/js/waves.js"></script>
+    <script src="dist/js/sidebarmenu.js"></script>
+    <script src="dist/js/custom.min.js"></script>
+</body>
+</html>
+
+<script>
+    function isEmpty(value) {
+        if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    var checkIdx = isEmpty(location.href.split('?')) ? '' : location.href.split('?')[1];
+    console.log(location.href);
+    console.log(checkIdx);
+    var idx = 0;
+
+
+    $(document).ready(function() {
+        $('#header').load('common/header.html');
+        $('#aside').load('common/aside.html');
+        $('#footer').load('common/footer.html');
+        sessionCheck();
+        getAdminList();
+        checkEdit(checkIdx);
+    });
+
+    function checkEdit(index) {
+        if (isEmpty(index)) {
+            $('#titleMessage').html('길드원 가입');
+            $('#buttonMessage').html('<button class="success" style="float: right;" onClick="insertNoble()" id="buttonMessage">가입</button>');
+        } else {
+            $('#titleMessage').html('길드원 수정');
+            $('#buttonMessage').html('<button class="success" style="float: right;" onClick="updateNoble()" id="buttonMessage">수정</button>');
+            idx = parseInt(index.split('=')[1]);
+            getNoble();
+        }
+    }
+    function getAdminList() {
+        $.ajax({
+            url: 'https://reboot2noble.kro.kr/api/Admin/getAdmin', 
+            type: 'POST',
+            success: function(data){
+                var str = '';
+                $.each(data, function(i) {
+                    str += '<option>' + data[i] + '</option>';
+                });
+                $('#adminList').html(str);
+            }
+        }); 
+    }
+
+    function logout() {
+        $.ajax({
+            url: 'https://reboot2noble.kro.kr/api/Main/logout', 
+            type: 'POST',
+            success: function(data){
+                if (data == "SUCCESS") {
+                    location.href = "login.html";
+                }
+            }
+        }); 
+    }
+
+    function sessionCheck() {
+        $.ajax({
+            url: 'https://reboot2noble.kro.kr/api/Main/session', 
+            type: 'POST',
+            success: function(data){
+                console.log(data);
+                if (data == "") {
+                    $('#navbarDropdown').html('로그인');
+                    alert('로그인이 되지 않았습니다.\n로그인 페이지로 이동합니다.');
+                    location.href = "login.html";
+                } else if (data == "ADMIN") {
+                    $('#products').attr('style', 'text-align: center; table-layout: fixed; font-size: small;');
+                    $('#asideAdmin').attr('style', '');
+                    $('#navbarDropdown').html('로그아웃');
+                } else {
+                    $('#navbarDropdown').html('로그아웃');
+                    alert('길드 관리자가 아닙니다.\n메인 페이지로 이동합니다.');
+                    location.href = "index.html";
+                }
+            }
+        });
+    }
+
+    function getNoble() {
+        var param = {};
+        param.idx = idx;
+        param = JSON.stringify(param);
+
+        $.ajax({
+            url: 'https://reboot2noble.kro.kr/api/Admin/getNoble',
+            data: param,
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(data){
+                $('#nickname').val(data.nickname);
+                $('#mainChar').val(isEmpty(data.mainChar) ? '' : data.mainChar);
+                if (data.dojangAgree == 1) {
+                    $('#dojangAgree').attr("checked", true);    
+                }
+                $('#adminList').val(data.grantor).attr("selected", "selected");
+            },
+        })
+    }
+
+    function insertNoble() {
+        var param = {};
+        param.nickname = $('#nickname').val();
+        param.mainChar = $('#mainChar').val();
+        param.dojangAgree = ($('#dojangAgree').is(':checked') == true) ? 1 : 0;
+        param.dotax = ($('#dotax').is(':checked') == true) ? 1 : 0;
+        param.grantor = $('#adminList').val();
+        param = JSON.stringify(param);
+
+        $.ajax({
+            url: 'https://reboot2noble.kro.kr/api/Admin/insertNoble',
+            data: param,
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(data){
+                if (data === "SUCCESS") {
+                    alert('가입이 완료되었습니다.\n리스트 페이지로 돌아갑니다.');
+                    location.href = "admin_noble_table.html";
+                } else {
+                    alert('오류로 인해 캐릭터가 가입되지 않았습니다.\n개발자에게 문의 주세요.\n리스트 페이지로 돌아갑니다.');
+                    location.href = "admin_noble_table.html";
+                }
+            },
+        })
+    }
+
+    function updateNoble() {
+        var param = {};
+        param.idx = idx;
+        param.nickname = $('#nickname').val();
+        param.mainChar = $('#mainChar').val();
+        param.dojangAgree = ($('#dojangAgree').is(':checked') == true) ? 1 : 0;
+        param.grantor = $('#adminList').val();
+        param = JSON.stringify(param);
+
+        $.ajax({
+            url: 'https://reboot2noble.kro.kr/api/Admin/updateNoble',
+            data: param,
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(data){
+                if (data === "SUCCESS") {
+                    alert('수정이 완료되었습니다.\n리스트 페이지로 돌아갑니다.');
+                    location.href = "admin_noble_table.html";
+                } else {
+                    console.log(data)
+                    alert('오류로 인해 캐릭터가 수정되지 않았습니다.\n개발자에게 문의 주세요.\n리스트 페이지로 돌아갑니다.');
+                    location.href = "admin_noble_table.html";
+                }
+            },
+        })
+    }
+</script>
+

@@ -16,13 +16,12 @@
 
     <select id="getCenturyList" parameterType="map" resultType="Century">
         SELECT * FROM century
-            <if test="type == 1 and searchStr != ''"> WHERE nickname LIKE '%${searchStr}%'</if>
-            <if test="type == 2 and searchStr != ''"> WHERE job LIKE '%${searchStr}%'</if>
+            <if test="searchStr != ''"> WHERE nickname LIKE '%${searchStr}%'</if>
         ORDER BY ${order}
     </select>
 
     <select id="getMainCharFromCentury" parameterType="String" resultType="String">
-        SELECT main_char FROM century WHERE nickname LIKE '%${searchStr}%' AND main_char is not null
+        SELECT main_char FROM century WHERE nickname LIKE '%${searchStr}%' AND main_char != ''
     </select>
 
     <select id="getCentury" parameterType="int" resultType="Century">
@@ -32,12 +31,12 @@
     <update id="updateCentury" parameterType="Century">
         UPDATE century
             <set>
-                <if test="nickname != null or nickname != ''">nickname = #{nickname}</if>
-                <if test="mainChar != null or mainChar != ''">main_char = #{mainChar}</if>
-                <if test="level != null or level != ''">level = #{level}</if>
-                <if test="job != null or job != ''">job = #{job}</if>
-                <if test="upperNoble != null or upperNoble != ''">upper_noble = #{upperNoble}</if>
-                <if test="grantor != null or grantor != ''">grantor = #{grantor}</if>
+                <if test="nickname != null or nickname != ''">nickname = #{nickname},</if>
+                <if test="mainChar != null or mainChar != ''">main_char = #{mainChar},</if>
+                <if test="level != null or level != -1">level = #{level},</if>
+                <if test="job != null or job != ''">job = #{job},</if>
+                <if test="upperNoble != null or upperNoble != -1">upper_noble = #{upperNoble},</if>
+                <if test="grantor != null or grantor != ''">grantor = #{grantor},</if>
             </set>
         WHERE idx = #{idx}
     </update>

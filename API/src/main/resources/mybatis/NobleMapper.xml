@@ -7,7 +7,7 @@
     </insert>
 
     <select id="getNobleListForTotal" parameterType="map" resultType="Noble">
-        SELECT * FROM noble WHERE main_char is null
+        SELECT * FROM noble WHERE main_char = ''
             <if test="searchStr != ''"> AND nickname LIKE '%${searchStr}%'</if>
         ORDER BY ${order}
     </select>
@@ -17,7 +17,7 @@
     </select>
 
     <select id="getMainCharFromNoble" parameterType="String" resultType="String">
-        SELECT main_char FROM noble WHERE nickname LIKE '%${searchStr}%' AND main_char is not null
+        SELECT main_char FROM noble WHERE nickname LIKE '%${searchStr}%' AND main_char != ''
     </select>
 
     <select id="getNobleList" parameterType="map" resultType="Noble">
@@ -36,18 +36,25 @@
     <update id="updateNoble" parameterType="Noble">
         UPDATE noble
             <set>
-                <if test="nickname != null or nickname != ''">nickname = #{nickname},</if>
-                <if test="mainChar != null or mainChar != ''">main_char = #{mainChar},</if>
-                <if test="level != null or level != ''">level = #{level},</if>
-                <if test="job != null or job != ''">job = #{job},</if>
-                <if test="dojang != null or dojang != ''">dojang = #{dojang},</if>
-                <if test="exemptedDate != null or exemptedDate != ''">exempted_date = #{exemptedDate},</if>
-                <if test="dojangAgree != null or dojangAgree != ''">dojang_agree = #{dojangAgree},</if>
-                <if test="grantor != null or grantor != ''">grantor = #{grantor},</if>
+                <if test="nickname != ''">nickname = #{nickname},</if>
+                <if test="mainChar != ''">main_char = #{mainChar},</if>
+                <if test="level != -1">level = #{level},</if>
+                <if test="job != ''">job = #{job},</if>
+                <if test="dojang != -1">dojang = #{dojang},</if>
+                <if test="dojangAgree != -1">dojang_agree = #{dojangAgree},</if>
+                <if test="grantor != ''">grantor = #{grantor},</if>
             </set>
         WHERE idx = #{idx}
     </update>
 
+    <update id="useExempt" parameterType="map">
+        UPDATE noble SET exempted_date = #{exemptedDate} where idx = #{idx}
+    </update>
+
+    <update id="warning" parameterType="int">
+        UPDATE noble SET warn = 1 where idx = #{idx}
+    </update>
+    
     <delete id="deleteNoble" parameterType="int">
         DELETE FROM noble WHERE idx = #{idx}
     </delete>
@@ -65,10 +72,10 @@
     </select>
 
     <select id="getAdmin" resultType="String">
-        SELECT nickname FROM noble WHERE admin = 1
+        SELECT nickname FROM noble WHERE admin > 0
     </select>
 
     <select id="getNobleCount" resultType="int">
-        SELECT COUNT(*) FROM noble
+        SELECT COUNT(*) FROM noble WHERE dotax = 0
     </select>
 </mapper>

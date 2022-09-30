@@ -104,6 +104,7 @@ public class GuildCrawlingService {
             response.put("dojang", 0);
         }
 
+        //System.out.println(response);
         return response;
     }
 }

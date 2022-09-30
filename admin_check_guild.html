@@ -9,6 +9,67 @@
 </head>
 
 <style>
+    :root {
+        --button-color: #ffffff;
+        --button-bg-color: #0d6efd;
+        --button-hover-bg-color: #025ce2;
+    }
+
+    button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        
+        background: var(--button-bg-color);
+        color: var(--button-color);
+        
+        margin: 0;
+        padding: 3px 6px;
+        
+        font-family: '나눔 고딕';
+        font-weight: 400;
+        text-align: center;
+        text-decoration: none;
+        
+        border: none;
+        border-radius: 4px;
+        
+        display: inline-block;
+        width: auto;
+        
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        
+        cursor: pointer;
+        
+        transition: 0.5s;
+    }
+
+    button.success {
+        --button-bg-color: #28a745;
+        --button-hover-bg-color: #218838;
+    }
+
+    button.error {
+        --button-bg-color: #dc3545;
+        --button-hover-bg-color: #c82333;
+    }
+
+    button.warning {
+        --button-color: #212529;
+        --button-bg-color: #ffc107;
+        --button-hover-bg-color: #e0a800;
+    }
+
+    button:active,
+    button:hover,
+    button:focus {
+        background: var(--button-hover-bg-color);
+        outline: 0;
+    }
+    button:disabled {
+        opacity: 0.5;
+    }
+
     body {
         font-family: '나눔 고딕';
     }
@@ -31,6 +92,20 @@
         background: #333;
         color: #fff;
     }
+
+    .modal { 
+        position:fixed; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0%; left:0%; display:none;
+    }
+
+    .custom_modal_content {
+        width:400px; height:300px;
+        background:#fff; border-radius:10px;
+        position:relative; top:30%; left:50%;
+        margin-top:-50px; margin-left:-200px;
+        text-align:center;
+        box-sizing:border-box; padding:74px 0;
+        line-height:23px;
+    }
 </style>
 
 <body>
@@ -49,30 +124,17 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">로그 조회</h4>
-                            <table style="margin-bottom: 1vw; float: left;">
-                                <tbody>
-                                <tr>
-                                    <td style="width: 300px;">
-                                        <input id="ipt_search_str" class="form-control" placeholder="찾을 닉네임을 입력하세요."/>
-                                    </td>
-                                    <td style="width: 10px;"></td>
-                                    <td>
-                                        <a class="btn btn-primary" style="width: 100px;" onclick="createTable()"><i class="me-2 mdi mdi-search-web"></i>검색</a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div style="float: right; margin-right: 1vw" id="total"></div>
+                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">인원 관리 필요 목록</h4>
                             <div class="table-responsive" style="display: inline-block;">
                                 <table id="products" class="table table-bordered" style="display: none;">
                                     <thead class="table-light">
                                         <tr>
-                                            <th scope="col">발생일</th>
-                                            <th scope="col">닉네임</th>
-                                            <th scope="col" colspan="2">무엇</th>
-                                            <th scope="col">이유</th>
-                                            <th scope="col">담당자</th>
+                                            <th scope="col">노블 DB</th>
+                                            <th scope="col">노블 게임</th>
+                                            <th scope="col">20세기 DB</th>
+                                            <th scope="col">20세기 게임</th>
+                                            <th scope="col">도탁스 DB</th>
+                                            <th scope="col">도탁스 게임</th>
                                         </tr>
                                     </thead>
                                     <tbody id="total_table">
@@ -110,12 +172,6 @@
         $('#footer').load('common/footer.html');
         sessionCheck();
         createTable();
-        pagination();
-        $('#ipt_search_str').keypress(function (event) {
-            if(event.keyCode == '13'){
-                searchData();
-            }
-        })
     });
 
     function logout() {
@@ -145,67 +201,13 @@
                     $('#asideAdmin').attr('style', '');
                     $('#navbarDropdown').html('로그아웃');
                 } else {
-                    $('#products').attr('style', 'text-align: center; table-layout: fixed; font-size: small;');
                     $('#navbarDropdown').html('로그아웃');
+                    alert('길드 관리자가 아닙니다.\n메인 페이지로 이동합니다.');
+                    location.href = "index.html";
+                
                 }
             }
         });
-    }
-
-    function searchData() {
-        createTable();
-    }
-
-    function pagination() {
-        var rowPerPage = 20;
-
-        $('#nav').remove();
-        var $products = $('#products');
-
-        $products.after('<div id="nav">');
-
-
-        var $tr = $($products).find('tbody tr');
-        var rowTotals = $tr.length;
-
-        var pageTotal = Math.ceil(rowTotals/ rowPerPage);
-        var i = 0;
-
-        for (; i < pageTotal; i++) {
-            $('<a href="#"></a>')
-                    .attr('rel', i)
-                    .html(i + 1)
-                    .appendTo('#nav');
-        }
-
-        $tr.addClass('off-screen')
-                .slice(0, rowPerPage)
-                .removeClass('off-screen');
-
-        var $pagingLink = $('#nav a');
-        $pagingLink.on('click', function (evt) {
-            evt.preventDefault();
-            var $this = $(this);
-            if ($this.hasClass('active')) {
-                return;
-            }
-            $pagingLink.removeClass('active');
-            $this.addClass('active');
-
-            var currPage = $this.attr('rel');
-            var startItem = currPage * rowPerPage;
-            var endItem = startItem + rowPerPage;
-
-            $tr.css('opacity', '0.0')
-                    .addClass('off-screen')
-                    .slice(startItem, endItem)
-                    .removeClass('off-screen')
-                    .animate({opacity: 1}, 300);
-
-        });
-
-        $pagingLink.filter(':first').addClass('active');
-
     }
 
     function createTable() {
@@ -214,24 +216,47 @@
         param = JSON.stringify(param);
 
         $.ajax({
-            url: 'https://reboot2noble.kro.kr/api/Admin/getLogList',
+            url: 'https://reboot2noble.kro.kr/api/Admin/manageList',
             data: param,
             type: 'POST',
             contentType: 'application/json',
             success: function(data){
-                var str = '';
-                
-                $.each(data, function(i) {
-                    var exemptedDate = data[i].exemptedDate;
-
-                    str += '<tr>';
-                    str += '<th scope="row">' + (isEmpty(data[i].createDt) ? '' : data[i].createDt) + '</th>';
-                    str += '<td>' + (isEmpty(data[i].nickname) ? '' : data[i].nickname)+ '</td>';
-                    str += '<td colspan="2">' + (isEmpty(data[i].what) ? '' : data[i].what)+ '</td>';
-                    str += '<td>' + (isEmpty(data[i].reason) ? '' : data[i].reason)+ '</td>';
-                    str += '<td>' + (isEmpty(data[i].who) ? '' : data[i].who) + '</td>';
-                    str += '</tr>'
+                var nobleList = '';
+                var nobleRealList = '';
+                var centuryList = '';
+                var centuryRealList = '';
+                var dotaxList = '';
+                var dotaxRealList = '';
+                var str = ''
+                $.each(data.nobleSheet, function(i) {
+                    nobleList += data.nobleSheet[i] + '<br>';
                 });
+                $.each(data.centurySheet, function(i) {
+                    centuryList += data.centurySheet[i] + '<br>';
+                });
+                $.each(data.dotaxSheet, function(i) {
+                    dotaxList += data.dotaxSheet[i] + '<br>';
+                });
+                $.each(data.nobleGame, function(i) {
+                    nobleRealList += data.nobleGame[i] + '<br>';
+                });
+                $.each(data.centuryGame, function(i) {
+                    centuryRealList += data.centuryGame[i] + '<br>';
+                });
+                $.each(data.dotaxGame, function(i) {
+                    dotaxRealList += data.dotaxGame[i] + '<br>';
+                });
+
+                console.log(nobleList);
+
+                str += '<tr id="userRow">';
+                str += '<th scope="row">' + nobleList + '</th>';
+                str += '<td>' + nobleRealList + '</td>';
+                str += '<td>' + centuryList + '</td>';
+                str += '<td>' + centuryRealList + '</td>';
+                str += '<td>' + dotaxList + '</td>';
+                str += '<td>' + dotaxRealList+ '</td>';
+                str += '</tr>'
 
                 if (str == '') {
                     str = '<td scope="col" colspan="6">조회할 수 있는 데이터가 없습니다.</td>'
@@ -239,7 +264,6 @@
                     $('#nav').remove();
                 } else {
                     $('#total_table').html(str);
-                    pagination();
                 }
             },
         })

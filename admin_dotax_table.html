@@ -124,7 +124,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">노블 인원 관리</h4>
+                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">도탁스 인원 관리</h4>
                             <table style="margin-bottom: 1vw; float: left;">
                                 <tbody>
                                 <tr>
@@ -147,10 +147,7 @@
                                             <th scope="col">본캐</th>
                                             <th scope="col">레벨</th>
                                             <th scope="col">직업</th>
-                                            <th scope="col">무릉</th>
-                                            <th scope="col">무릉 동의</th>
-                                            <th scope="col">면제권</th>
-                                            <th scope="col">경고</th>
+                                            <th scope="col">우수노블 여부</th>
                                             <th scope="col">승인</th>
                                             <th scope="col">관리</th>
                                         </tr>
@@ -174,56 +171,13 @@
                             <input style="width: 80%; padding-right: 10px;" id="reason">
                         </div>
                     </div>
+        
                     <div class="form-group col-md-12" style="display: flex;">
                         <div class="col-md-3" style="margin-top: 3px; text-align: right;">
                             <span style="font-size: 16px;">승인자</span>
                         </div>
                         <div class="col-md-9">
-                            <select class="adminList" id="deleteAdmin">
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <button class="modal-delete success">확인</button>
-                        <button class="modal-delete-cancel error">취소</button>
-                    </div>
-                </div>
-            </div>
-            <div id="warning" class="modal">
-                <div class="custom_modal_content">
-                    <h3>경고를 주시겠습니까?</h3>
-                    <div class="form-group col-md-12" style="display: flex; margin-top: 20px;">
-                        <div class="col-md-3" style="margin-top: 3px; text-align: right;">
-                            <span style="font-size: 16px;">경고 사유</span>
-                        </div>
-                        <div class="col-md-9">
-                            <input style="width: 80%; padding-right: 10px;" id="warningReason">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-12" style="display: flex; margin-top: 20px;">
-                        <div class="col-md-3" style="margin-top: 3px; text-align: right;">
-                           <span style="font-size: 16px;">승인자</span>
-                        </div>
-                        <div class="col-md-9">
-                            <select class="adminList" id="warningAdmin">
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <button class="modal-delete success">확인</button>
-                        <button class="modal-delete-cancel error">취소</button>
-                    </div>
-                </div>
-            </div>
-            <div id="exempted" class="modal">
-                <div class="custom_modal_content">
-                    <h3>면제권을 사용하시겠습니까?</h3>
-                    <div class="form-group col-md-12" style="display: flex;">
-                        <div class="col-md-3" style="margin-top: 3px; text-align: right;">
-                            <span style="font-size: 16px;">승인자</span>
-                        </div>
-                        <div class="col-md-9">
-                            <select class="adminList" id="exemptedAdmin">
+                            <select id="adminList">
                             </select>
                         </div>
                     </div>
@@ -246,7 +200,7 @@
 </html>
 
 <script>
-    var totalCheck = 0;
+    var total = 0;
     var modalCheck = 0;
     function isEmpty(value) {
         if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
@@ -271,84 +225,6 @@
         });
     });
 
-    function useExempt(index) {
-        var param = {};
-        param.idx = index;
-        param.grantor = $('#exemptedAdmin').val();
-        param = JSON.stringify(param);
-
-        console.log(index);
-        console.log(modalCheck);
-        if (modalCheck == 1) {
-            modalCheck = 0;
-            $('#exempted').fadeOut();
-        } else {
-            modalCheck = 1;
-            $('#exempted').fadeIn();
-        }
-
-        $('.modal-delete').on('click', function() {
-            $.ajax({
-                url: 'https://reboot2noble.kro.kr/api/Admin/useExempt', 
-                data: param,
-                type: 'POST',
-                contentType: 'application/json',
-                success: function(data){
-                    if (data == "SUCCESS") {
-                        alert("면제권 사용이 완료되었습니다.");
-                        $('#exempted').fadeOut();                
-                        createTable();
-                    }
-                }
-            }); 
-        });
-
-        $('.modal-delete-cancel').on('click', function() {
-            modalCheck = 0;
-            $('#exempted').fadeOut();
-        });
-    }
-
-    function warning(index) {
-        console.log(modalCheck);
-        if (modalCheck == 1) {
-            modalCheck = 0;
-            $('#warning').fadeOut();
-        } else {
-            modalCheck = 1;
-            $('#warning').fadeIn();
-        }
-
-        $('.modal-delete').on('click', function() {
-            var param = {};
-            param.idx = index;
-            param.reason = $('#warningReason').val();
-            param.grantor = $('#warningAdmin').val();
-            param = JSON.stringify(param);
-
-            
-            console.log(param);
-            $.ajax({
-                url: 'https://reboot2noble.kro.kr/api/Admin/warning', 
-                data: param,
-                type: 'POST',
-                contentType: 'application/json',
-                success: function(data){
-                    if (data == "SUCCESS") {
-                        alert("경고 처리가 완료되었습니다.");
-                        $('#warning').fadeOut();                
-                        createTable();
-                    }
-                }
-            }); 
-        });
-
-        $('.modal-delete-cancel').on('click', function() {
-            modalCheck = 0;
-            $('#exempted').fadeOut();
-        });
-    }
-
     function getAdminList() {
         $.ajax({
             url: 'https://reboot2noble.kro.kr/api/Admin/getAdmin', 
@@ -358,54 +234,46 @@
                 $.each(data, function(i) {
                     str += '<option>' + data[i] + '</option>';
                 });
-                $('.adminList').html(str);
+                $('#adminList').html(str);
             }
         }); 
     }
 
-    function openDeleteModal(idx, admin) {
-        if (admin > 0) {
-            alert("간부진은 해당 시스템으로 길드 탈퇴가 불가능합니다.\n개발자에게 문의 주세요.");
+    function openModal(idx) {
+        console.log(idx);
+        console.log(modalCheck);
+        if (modalCheck == 1) {
+            modalCheck = 0;
+            $('#delete').fadeOut();
         } else {
-            console.log(idx);
-            console.log(modalCheck);
-            if (modalCheck == 1) {
-                modalCheck = 0;
-                $('#delete').fadeOut();
-            } else {
-                modalCheck = 1;
-                $('#delete').fadeIn();
-            }
-
-            $('.modal-delete').on('click', function() {
-                deleteUser(idx);
-            });
-
-            $('.modal-delete-cancel').on('click', function() {
-                modalCheck = 0;
-                $('#delete').fadeOut();
-            });
+            modalCheck = 1;
+            $('#delete').fadeIn();
         }
+
+        $('.modal-delete').on('click', function() {
+            deleteUser(idx);
+        });
+
+        $('.modal-delete-cancel').on('click', function() {
+            modalCheck = 0;
+            $('#delete').fadeOut();
+        });
     }
 
     function deleteUser(idx) {
         var param = {};
         param.idx = idx;
         param.reason = $('#reason').val();
-        param.grantor = $('#deleteAdmin').val();
+        param.grantor = $('#adminList').val();
         param = JSON.stringify(param);
 
         $.ajax({
-            url: 'https://reboot2noble.kro.kr/api/Admin/deleteNoble',
+            url: 'https://reboot2noble.kro.kr/api/Admin/deleteDotax',
             data: param,
             type: 'POST',
             contentType: 'application/json',
             success: function(data){
-                if (data === "ALLSUCCESS") {
-                    alert('본캐가 탈퇴되었습니다.\n부캐 및 주보캐 전체가 탈퇴되었습니다.');
-                    $('#delete').fadeOut();
-                    createTable();
-                } else if (data === "SUCCESS"){
+                if (data === "SUCCESS"){
                     alert('캐릭터가 탈퇴되었습니다.');
                     $('#delete').fadeOut();
                     createTable();
@@ -510,60 +378,37 @@
 
     }
 
-    function updateDojang() {
-        $.ajax({
-            url: 'https://reboot2noble.kro.kr/api/Admin/updateAllDojang', 
-            type: 'POST',
-            success: function(data){
-                
-                if (data == "SUCCESS") {
-                    alert('갱신이 완료되었습니다.')
-                    createTable();
-                } else {
-                    alert('갱신이 실패하였습니다.\n개발자에게 문의 주세요.');
-                    createTable();
-                }
-            }
-        });
-    }
-
     function createTable() {
         var param = {};
         param.searchStr = $('#ipt_search_str').val();
         param = JSON.stringify(param);
 
         $.ajax({
-            url: 'https://reboot2noble.kro.kr/api/Admin/getNobleList',
+            url: 'https://reboot2noble.kro.kr/api/Admin/getDotaxList',
             data: param,
             type: 'POST',
             contentType: 'application/json',
             success: function(data){
+                if (total == 0) {
+                    total = data.length;
+                    $('#total').html("<div style='display:inline-block'>도탁스 : " + total + "명</div><div style='padding-top: 5px; padding-bottom: 5px'><a href='dotax_user_detail.html'><button class='success'>길드 가입</button></a></div>");
+                }
+                
                 var str = '';
-                var total = 0;
                 $.each(data, function(i) {
                     str += '<tr id="userRow">';
-                    str += '<th scope="row"><a href="noble_user_detail.html?idx=' + data[i].idx + '">' + ((data[i].dotax == 1) ?  (data[i].nickname + '(도탁스)') : data[i].nickname) + '</a></th>';
+                    str += '<th scope="row"><a href="dotax_user_detail.html?idx=' + data[i].idx + '">' + data[i].nickname + '</a></th>';
                     str += '<td>' + (isEmpty(data[i].mainChar) ? '' : data[i].mainChar) + '</td>';
                     str += '<td>' + (isEmpty(data[i].level) ? '' : data[i].level)+ '</td>';
                     str += '<td>' + (isEmpty(data[i].job) ? '' : data[i].job)+ '</td>';
-                    str += '<td>' + (isEmpty(data[i].dojang) ? '' : data[i].dojang) + '</td>';
-                    str += '<td>' + ((data[i].dojangAgree == 0) ? '거절' : '동의') + '</td>';
-                    str += '<td>' + (isEmpty(data[i].exemptedDate && isEmpty(data[i].mainChar)) ? ('<input type="checkbox" onClick="useExempt(' + data[i].idx + ')">') : '<input type="checkbox" checked disabled>') + '</td>';    
-                    str += '<td>' + (isEmpty(data[i].warn && isEmpty(data[i].mainChar)) ? ('<input type="checkbox" onClick="warning(' + data[i].idx + ')">') : '<input type="checkbox" checked disabled>') + '</td>';    
+                    str += '<td>' + ((data[i].upperNoble == 0 && data[i].dotaxer == 0) ? 'X' : 'O') + '</td>';
                     str += '<td>' + (isEmpty(data[i].grantor) ? '' : data[i].grantor) + '</td>';
-                    str += '<td><button class="warning" onClick="openDeleteModal(' + data[i].idx + ', ' + data[i].admin + ')">탈퇴</button></td>';
+                    str += '<td><button class="warning" onClick="openModal(' + data[i].idx + ')">탈퇴</button></td>';
                     str += '</tr>'
-                    if (data[i].dotax == 0) 
-                        total++;
                 });
 
-                if (totalCheck == 0) {
-                    totalCheck = 1;
-                    $('#total').html("<div style='display:inline-block'>노블 : " + total + "명</div><div style='padding-top: 5px; padding-bottom: 5px'><a href='noble_user_detail.html'><button class='success'>길드 가입</button></a><button class='error' style='padding-left: 5px; display: none;' onClick='updateDojang()'>전체 무릉 갱신</button></div>" );
-                }
-                
                 if (str == '') {
-                    str = '<td scope="col" colspan="10">조회할 수 있는 데이터가 없습니다.</td>'
+                    str = '<td scope="col" colspan="7">조회할 수 있는 데이터가 없습니다.</td>'
                     $('#total_table').html(str);
                     $('#nav').remove();
                 } else {

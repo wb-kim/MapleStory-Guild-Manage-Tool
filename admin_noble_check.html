@@ -49,21 +49,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">길드 전체 인원 명단</h4>
-                            <table style="margin-bottom: 1vw; float: left;">
-                                <tbody>
-                                <tr>
-                                    <td style="width: 300px;">
-                                        <input id="ipt_search_str" class="form-control" placeholder="찾을 닉네임을 입력하세요."/>
-                                    </td>
-                                    <td style="width: 10px;"></td>
-                                    <td>
-                                        <a class="btn btn-primary" style="width: 100px;" onclick="createTable()"><i class="me-2 mdi mdi-search-web"></i>검색</a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div style="float: right; margin-right: 1vw" id="total"></div>
+                            <h4 class="card-title" style="margin-bottom: 1vw; font-weight: bold;">우수노블 정정 필요 명단</h4>
                             <div class="table-responsive" style="display: inline-block;">
                                 <table id="products" class="table table-bordered" style="display: none;">
                                     <thead class="table-light">
@@ -74,9 +60,6 @@
                                             <th scope="col" colspan="2">20세기(우수노블)</th>
                                             <th scope="col">도탁스</th>
                                             <th scope="col" colspan="4">도탁스(우수노블)</th>
-                                            <th scope="col" id="order" value="admin DESC" onClick="changeOrder()" style="cursor:pointer;">
-                                                <i class="me-2 mdi mdi-sort"></i>면제권
-                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody id="total_table">
@@ -113,14 +96,8 @@
         $('#aside').load('common/aside.html');
         $('#footer').load('common/footer.html');
         sessionCheck();
-        totalCount();
         createTable();
         pagination();
-        $('#ipt_search_str').keypress(function (event) {
-            if(event.keyCode == '13'){
-                searchData();
-            }
-        })
     });
 
     function logout() {
@@ -150,34 +127,15 @@
                     $('#asideAdmin').attr('style', '');
                     $('#navbarDropdown').html('로그아웃');
                 } else {
-                    $('#products').attr('style', 'text-align: center; table-layout: fixed; font-size: small;');
                     $('#navbarDropdown').html('로그아웃');
+                    alert('길드 관리자가 아닙니다.\n메인 페이지로 이동합니다.');
+                    location.href = "index.html";
+                
                 }
             }
         });
     }
 
-    function searchData() {
-        $('#order').attr("value", "idx ASC");
-        $('#order').html('<i class="me-2 mdi mdi-sort"></i>면제권')
-        createTable();
-    }
-
-    function changeOrder() {
-        if ($('#order').attr("value") == "idx ASC") {
-            $('#order').attr("value", "exempted_date ASC");
-            $('#order').html('<i class="me-2 mdi mdi-sort-ascending"></i>면제권')
-            createTable();
-        } else if ($('#order').attr("value") == "exempted_date ASC") {
-            $('#order').attr("value", "exempted_date DESC");  
-            $('#order').html('<i class="me-2 mdi mdi-sort-descending"></i>면제권')
-            createTable();
-        } else {
-            $('#order').attr("value", "exempted_date ASC");      
-            $('#order').html('<i class="me-2 mdi mdi-sort-ascending"></i>면제권')
-            createTable();
-        }
-    }
     function pagination() {
         var rowPerPage = 20;
 
@@ -230,34 +188,14 @@
 
     }
 
-    function totalCount() {
-        $.ajax({
-            url: 'https://reboot2noble.kro.kr/api/Main/getTotalCount',
-            type: 'POST',
-            contentType: 'application/json',
-            success: function(data){
-                $('#total').html("노블 : " + data[0] + "명, 20세기 : " + data[1] + "명, 도탁스 : " +data[2] + "명");
-            },
-        })
-    }
-
     function createTable() {
-        var param = {};
-        param.searchStr = $('#ipt_search_str').val();
-        param.order = $('#order').attr("value");
-        param.page = 1;
-        param = JSON.stringify(param);
-
         $.ajax({
-            url: 'https://reboot2noble.kro.kr/api/Main/getTotalList',
-            data: param,
+            url: 'https://reboot2noble.kro.kr/api/Admin/getNoNobleList',
             type: 'POST',
-            contentType: 'application/json',
             success: function(data){
                 var str = '';
                 
                 $.each(data, function(i) {
-                    var exemptedDate = data[i].exemptedDate;
                     var style = '';
                     if (data[i].admin == 1) {
                         style = "background-color: #efefef"
@@ -278,7 +216,6 @@
                     str += '<td>' + (isEmpty(data[i].dotaxUpper[1]) ? '' : data[i].dotaxUpper[1]) + '</td>';
                     str += '<td>' + (isEmpty(data[i].dotaxUpper[2]) ? '' : data[i].dotaxUpper[2]) + '</td>';
                     str += '<td>' + (isEmpty(data[i].dotaxUpper[3]) ? '' : data[i].dotaxUpper[3]) + '</td>';
-                    str += '<td>' + (isEmpty(data[i].exemptedDate) ? '' : exemptedDate.split(" ")[0]) + '</td>'; 
                     str += '</tr>'
                 });
 

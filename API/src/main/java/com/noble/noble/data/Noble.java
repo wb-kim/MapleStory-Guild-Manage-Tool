@@ -4,14 +4,16 @@ import lombok.Data;
 
 @Data
 public class Noble {
-    private int idx;
-    private String nickname;
-    private int admin;
-    private String mainChar;
-    private int level;
-    private String job;
-    private int dojang;
+    private int idx = -1;
+    private String nickname = "";
+    private int admin = -1;
+    private String mainChar = "";
+    private int level = -1;
+    private String job = "";
+    private int dojang = -1;
     private String exemptedDate;
-    private int dojangAgree;
-    private String grantor;
+    private int dotax = 0;
+    private int warn = 0;
+    private int dojangAgree = -1;
+    private String grantor = "";
 }
